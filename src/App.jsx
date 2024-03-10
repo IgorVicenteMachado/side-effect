@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Places from './components/Places.jsx';
 import { AVAILABLE_PLACES } from './data.js';
 import Modal from './components/Modal.jsx';
@@ -10,10 +10,8 @@ const storedIds = JSON.parse(localStorage.getItem('selectedPlaces')) || [];
 const storedPlaces = storedIds.map((id) =>
   AVAILABLE_PLACES.find((place) => place.id === id),
 );
-console.log('fora do app');
 
 function App() {
-  console.log('dentro do app');
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const selectedPlace = useRef();
   const [availablePlaces, setAvailablePlaces] = useState([]);
@@ -57,8 +55,7 @@ function App() {
       );
     }
   }
-
-  function handleRemovePlace() {
+  const handleRemovePlace = useCallback(function handleRemovePlace() {
     setPickedPlaces((prevPickedPlaces) =>
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current),
     );
@@ -69,7 +66,7 @@ function App() {
       'selectedPlaces',
       JSON.stringify(storedIds.filter((id) => selectedPlace.current !== id)),
     );
-  }
+  }, []);
 
   return (
     <>
