@@ -10,14 +10,21 @@ import { sortPlacesByDistance } from './loc.js';
 function App() {
   const modal = useRef();
   const selectedPlace = useRef();
+  const [availablePlaces, setAvailablePlaces] = useState([]);
   const [pickedPlaces, setPickedPlaces] = useState([]);
 
+  //this code bellow is a side effect, because it is needed by the application but it isn't direct
+  //related to the main task of the App() component which is deliver/return the renderable jsx code.
+  //all other functions are directly related to the jsx code, besides that the code bellow doesn't finish instantly
+  //probably its execution will end after the App has already be rendered.
   navigator.geolocation.getCurrentPosition((position) => {
-    sortPlacesByDistance(
+    const sortedPlaces = sortPlacesByDistance(
       AVAILABLE_PLACES,
       position.coords.latitude,
       position.coords.longitude,
     );
+
+    //setAvailablePlaces(sortedPlaces); //ERRO :: infinite loop
   });
 
   function handleStartRemovePlace(id) {
@@ -72,7 +79,7 @@ function App() {
         />
         <Places
           title="Available Places"
-          places={AVAILABLE_PLACES}
+          places={availablePlaces}
           onSelectPlace={handleSelectPlace}
         />
       </main>
