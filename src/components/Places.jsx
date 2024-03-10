@@ -1,8 +1,10 @@
+import P from 'prop-types';
+
 export default function Places({ title, places, fallbackText, onSelectPlace }) {
   return (
     <section className="places-category">
       <h2>{title}</h2>
-      {places.length === 0 && <p className='fallback-text'>{fallbackText}</p>}
+      {places.length === 0 && <p className="fallback-text">{fallbackText}</p>}
       {places.length > 0 && (
         <ul className="places">
           {places.map((place) => (
@@ -18,3 +20,10 @@ export default function Places({ title, places, fallbackText, onSelectPlace }) {
     </section>
   );
 }
+
+Places.propTypes = {
+  title: P.string,
+  places: P.array,
+  fallbackText: P.string,
+  onSelectPlace: P.func,
+};
